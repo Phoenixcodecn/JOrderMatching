@@ -11,9 +11,10 @@ import jordermatching.core.OrderMatchingEngine;
 public class ApplicationMain {
     public static void main(String[] args) throws IOException {
         FIXServerConfiguration config = new FIXServerConfiguration();
-        config.setFixCompId("TS");
+        config.setFixCompId("MARKET");
         config.setFixReceiveCacheSize(1024);
         config.setFixPort(8323);
+        config.setFixSeqNumValidation(false);
         IElementQueue<FIXMessage> handler = new ArrayBlockingQueueItemQueue<FIXMessage>();
         OrderMatchingEngine engine = new OrderMatchingEngine();
         FIXTradeApplication tradeServer = new FIXTradeApplication(engine, config, handler, true);
