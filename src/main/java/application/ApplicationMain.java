@@ -11,7 +11,7 @@ import jordermatching.core.OrderMatchingEngine;
 public class ApplicationMain {
     public static void main(String[] args) throws IOException {
         FIXServerConfiguration config = new FIXServerConfiguration();
-        config.setFixCompId("MARKET");
+        config.setFixCompId("FEME");
         config.setFixReceiveCacheSize(1024);
         config.setFixPort(8323);
         config.setFixSeqNumValidation(false);

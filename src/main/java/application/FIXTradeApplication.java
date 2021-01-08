@@ -18,6 +18,9 @@ import jordermatching.core.OrderMatchingEngine;
 import jordermatching.core.Order.OrdType;
 import jordermatching.core.Order.Side;
 
+/**
+ * 交易匹配应用
+ */
 public class FIXTradeApplication extends AbstractFIXServer {
 
   public static class ExecIDGenerator {

@@ -17,7 +17,7 @@ import jordermatching.core.Order.Side;
 
 public class TestUtility {
   public static String getBenchmarkFileName(String className) {
-	String s = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
+	String s = new SimpleDateFormat("MM-dd-yyyy HH-mm-ss").format(new Date());
     return "benchmark/"+s+"_"+className;
   }
 	

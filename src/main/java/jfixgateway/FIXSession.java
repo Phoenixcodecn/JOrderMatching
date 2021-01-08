@@ -380,7 +380,9 @@ public class FIXSession {
     
     if (outputStream != null) {
       if (verbose) {
-        System.out.println("OUTGOING: " + message.toString());
+        String s=message.toString();
+        s = s.replace(FIXConst.FIX_DELIMITER, '|');
+        System.out.println("OUTGOING: " + s);
       }
       outputStream.writeUTF(message.toString());
       outputStream.flush();
@@ -411,7 +413,9 @@ public class FIXSession {
     
     if (outputStream != null) {
       if (verbose) {
-        System.out.println("OUTGOING: " + message.toString());
+        String s = message.toString();
+        s = s.replace(FIXConst.FIX_DELIMITER, '|');
+        System.out.println("OUTGOING: " + s);
       }
       outputStream.writeUTF(message.toString());
       outputStream.flush();

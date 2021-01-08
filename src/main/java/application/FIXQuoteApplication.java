@@ -11,6 +11,9 @@ import jfixgateway.FIXSession;
 import jfixgateway.message.FIXMessage;
 import jordermatching.core.OrderMatchingEngine;
 
+/**
+ * 交易大盘应用
+ */
 public class FIXQuoteApplication extends AbstractFIXServer {
   private OrderMatchingEngine engine;
   private static ThreadLocal<double[]> pricesLocal = new ThreadLocal<double[]>() {
