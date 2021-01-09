@@ -11,3 +11,14 @@ Only JDK 1.8 is required to run the main project. <b>No third party library is n
 * login using username and password
 * symbol 如何初始化
 
+### run java code
+> 启动代码
+```
+java -cp target/core-0.0.1-SNAPSHOT.jar application.ApplicationMain
+```
+> 启动debug代码
+```
+java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000 -cp target/core-0.0.1-SNAPSHOT.jar application.ApplicationMain
+```
+
+

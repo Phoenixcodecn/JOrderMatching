@@ -15,38 +15,69 @@ public class FIXExecutionReportMessage implements IFIXMessage {
   private String targetCompId = "";
   private String sendingTime = "";
 
-  public FIXVersion getFixVersion() { return fixVersion; }
-  public FIXMessageType getMessageType() { return msgType; }
-  public int getSequenceNumber() { return seqNum; }
-  public final String getSenderCompId() { return senderCompId; }
-  public final String getTargetCompId() { return targetCompId; }
-  public final String getSendingTime() { return sendingTime; }
-  
-  public void setFixVersion(FIXVersion version) { fixVersion = version; }
-  public void setSequenceNumber(int sequenceNumber) { seqNum = sequenceNumber; }
-  public void setSenderCompId(String senderCompId) { this.senderCompId = senderCompId; }
-  public void setTargetCompId(String targetCompId) { this.targetCompId = targetCompId; }
-  public void setSendingTime(String sendingTime) { this.sendingTime = sendingTime; }
+  public FIXVersion getFixVersion() {
+    return fixVersion;
+  }
+
+  public FIXMessageType getMessageType() {
+    return msgType;
+  }
+
+  public int getSequenceNumber() {
+    return seqNum;
+  }
+
+  public final String getSenderCompId() {
+    return senderCompId;
+  }
+
+  public final String getTargetCompId() {
+    return targetCompId;
+  }
+
+  public final String getSendingTime() {
+    return sendingTime;
+  }
+
+  public void setFixVersion(FIXVersion version) {
+    fixVersion = version;
+  }
+
+  public void setSequenceNumber(int sequenceNumber) {
+    seqNum = sequenceNumber;
+  }
+
+  public void setSenderCompId(String senderCompId) {
+    this.senderCompId = senderCompId;
+  }
+
+  public void setTargetCompId(String targetCompId) {
+    this.targetCompId = targetCompId;
+  }
+
+  public void setSendingTime(String sendingTime) {
+    this.sendingTime = sendingTime;
+  }
 
   private String orderId = "";
   public String execId = "";
   public String clOrdId = "";
   public String symbol = "";
-  
+
   public String avgPx = "";
   public String lastPx = "";
-  
+
   public char execType = Character.MIN_VALUE;
   public char orderStatus = Character.MIN_VALUE;
   public char orderSide = Character.MIN_VALUE;
-  
+
   public long leavesQty = Long.MIN_VALUE;
   public long cumQty = Long.MIN_VALUE;
   public long orderQty = Long.MIN_VALUE;
   public long lastQty = Long.MIN_VALUE;
-  
+
   private FIXSession session;
-  
+
   public FIXExecutionReportMessage(FIXSession session) {
     this.session = session;
   }
@@ -54,43 +85,55 @@ public class FIXExecutionReportMessage implements IFIXMessage {
   public void setOrderId(String orderId) {
     this.orderId = orderId;
   }
+
   public void setExecId(String execId) {
     this.execId = execId;
   }
+
   public void setExecType(char execType) {
     this.execType = execType;
   }
+
   public void setOrderStatus(char orderStatus) {
     this.orderStatus = orderStatus;
   }
+
   public void setOrderSide(char orderSide) {
     this.orderSide = orderSide;
   }
+
   public void setLeavesQty(long leavesQty) {
     this.leavesQty = leavesQty;
   }
+
   public void setCumQty(long cumQty) {
     this.cumQty = cumQty;
   }
+
   public void setAvgPx(double avgPx) {
     this.avgPx = String.valueOf(avgPx);
   }
+
   public void setClOrdId(String clOrdId) {
     this.clOrdId = clOrdId;
   }
+
   public void setOrderQty(long orderQty) {
     this.orderQty = orderQty;
   }
+
   public void setSymbol(String symbol) {
     this.symbol = symbol;
   }
+
   public void setLastQty(long lastQty) {
     this.lastQty = lastQty;
   }
+
   public void setLastPx(double lastPx) {
     this.lastPx = String.valueOf(lastPx);
   }
-  
+
   private int calculateHeaderLength() {
     int headerLength = 20;
     // 20 = 4 * 5
@@ -104,14 +147,16 @@ public class FIXExecutionReportMessage implements IFIXMessage {
     headerLength += targetCompId.length();// FIX Target CompID 56
     return headerLength;
   }
-  
+
   static int stringSize(long x) {
-    return (int)(Math.log10(x)+1);
-}
-  
+    if (x == 0)
+      return 1;
+    return (int) (Math.log10(x) + 1);
+  }
+
   private int calculateBodyLength() {
     int bodyLength = calculateHeaderLength();
-    final int delimiterAndEqualsLength = 2; //length of = and delimiter
+    final int delimiterAndEqualsLength = 2; // length of = and delimiter
 
     if (orderId.length() > 0)
       bodyLength += 2 + delimiterAndEqualsLength + orderId.length();
@@ -121,19 +166,19 @@ public class FIXExecutionReportMessage implements IFIXMessage {
       bodyLength += 2 + delimiterAndEqualsLength + symbol.length();
     if (clOrdId.length() > 0)
       bodyLength += 2 + delimiterAndEqualsLength + clOrdId.length();
-    
+
     if (avgPx.length() > 0)
       bodyLength += 1 + delimiterAndEqualsLength + avgPx.length();
     if (lastPx.length() > 0)
       bodyLength += 2 + delimiterAndEqualsLength + lastPx.length();
-    
+
     if (execType != Character.MIN_VALUE)
       bodyLength += 3 + delimiterAndEqualsLength + 1;
     if (orderStatus != Character.MIN_VALUE)
       bodyLength += 2 + delimiterAndEqualsLength + 1;
     if (orderSide != Character.MIN_VALUE)
       bodyLength += 2 + delimiterAndEqualsLength + 1;
-    
+
     if (leavesQty != Long.MIN_VALUE)
       bodyLength += 3 + delimiterAndEqualsLength + stringSize(leavesQty);
     if (cumQty != Long.MIN_VALUE)
@@ -142,26 +187,32 @@ public class FIXExecutionReportMessage implements IFIXMessage {
       bodyLength += 2 + delimiterAndEqualsLength + stringSize(orderQty);
     if (lastQty != Long.MIN_VALUE)
       bodyLength += 2 + delimiterAndEqualsLength + stringSize(lastQty);
-    
+
     return bodyLength;
   }
-  
+
   public void appendTagValue(StringBuilder sb, String tag, long value) {
     sb.append(tag).append(FIXConst.FIX_EQUALS).append(value).append(FIXConst.FIX_DELIMITER);
   }
-  
+
   public void appendTagValue(StringBuilder sb, String tag, double value) {
     sb.append(tag).append(FIXConst.FIX_EQUALS).append(value).append(FIXConst.FIX_DELIMITER);
   }
-  
+
   public void appendTagValue(StringBuilder sb, String tag, char value) {
     sb.append(tag).append(FIXConst.FIX_EQUALS).append(value).append(FIXConst.FIX_DELIMITER);
   }
-  
+
   public void appendTagValue(StringBuilder sb, String tag, String value) {
     sb.append(tag).append(FIXConst.FIX_EQUALS).append(value).append(FIXConst.FIX_DELIMITER);
   }
-  
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    return this.toString(sb);
+  }
+
   public String toString(StringBuilder sb) {
     sb.setLength(0);
     // HEADER TAGS
@@ -187,14 +238,14 @@ public class FIXExecutionReportMessage implements IFIXMessage {
       appendTagValue(sb, FIXConst.TAG_AVERAGE_PRICE, avgPx);
     if (lastPx.length() > 0)
       appendTagValue(sb, FIXConst.TAG_LAST_PRICE, lastPx);
-    
+
     if (execType != Character.MIN_VALUE)
       appendTagValue(sb, FIXConst.TAG_EXEC_TYPE, execType);
     if (orderStatus != Character.MIN_VALUE)
       appendTagValue(sb, FIXConst.TAG_ORDER_STATUS, orderStatus);
     if (orderSide != Character.MIN_VALUE)
       appendTagValue(sb, FIXConst.TAG_ORDER_SIDE, orderSide);
-    
+
     if (leavesQty != Long.MIN_VALUE)
       appendTagValue(sb, FIXConst.TAG_LEAVES_QTY, leavesQty);
     if (cumQty != Long.MIN_VALUE)
@@ -217,7 +268,7 @@ public class FIXExecutionReportMessage implements IFIXMessage {
     }
     return String.format("%03d", sum % 256);
   }
-  
+
   @Override
   public void send() throws IOException {
     session.send(this);

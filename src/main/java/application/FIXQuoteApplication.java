@@ -118,7 +118,9 @@ public class FIXQuoteApplication extends AbstractFIXServer {
     groupNoMDEntries.AddGroup(groupAsk);
     
     msg.addGroup(FIXConst.TAG_NO_MD_ENTRIES, groupNoMDEntries);
-    
+    String s = msg.toString();
+    s = s.replace(FIXConst.FIX_DELIMITER, '|');
+    System.out.println("FIX Quote send message: " + s);
     session.send(msg);
   }
 

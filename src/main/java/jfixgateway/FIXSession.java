@@ -379,12 +379,12 @@ public class FIXSession {
     message.setSendingTime(currentUTCDateTime);
     
     if (outputStream != null) {
+      String s = message.toString();
       if (verbose) {
-        String s=message.toString();
-        s = s.replace(FIXConst.FIX_DELIMITER, '|');
-        System.out.println("OUTGOING: " + s);
+        String str = s.replace(FIXConst.FIX_DELIMITER, '|');
+        System.out.println("Report OUTGOING: " + str);
       }
-      outputStream.writeUTF(message.toString());
+      outputStream.writeUTF(s);
       outputStream.flush();
     } else {
       if (verbose) {

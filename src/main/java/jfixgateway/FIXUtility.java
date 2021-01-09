@@ -7,8 +7,8 @@ import java.util.TimeZone;
 public class FIXUtility {
   private static ThreadLocal<SimpleDateFormat> dfMicrosecondUTC = new ThreadLocal<SimpleDateFormat>() {
     protected SimpleDateFormat initialValue() {
-      SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss.SSS");
-      // SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HH:mm:ss.SSSSSS");
+      // SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss.SSS");
+      SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd-HH:mm:ss.SSSSSS");
       df.setTimeZone(TimeZone.getTimeZone("UTC"));
       return df;
     }
